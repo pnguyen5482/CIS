@@ -1,0 +1,99 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Twelve day moving avg =  110.75874925\n",
+      "Twenty-six day moving average = 110.75874925\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "0.0"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import pandas.io.data as pweb\n",
+    "import datetime\n",
+    "import requests\n",
+    "from bs4 import BeautifulSoup\n",
+    "\n",
+    "#macd is 12day exponential moving average - 26day exponential moving average\n",
+    "#Formula for ema is {Close - EMA(previous day)} x multiplier + EMA(previous day)\n",
+    "def macd(ticker):\n",
+    "    startDate = datetime.datetime.now() + datetime.timedelta(-12)\n",
+    "    startPlus = datetime.datetime.now() + datetime.timedelta(-11)\n",
+    "    endDate = datetime.datetime.now()\n",
+    "    finance=pweb.DataReader(ticker,'yahoo', startDate, endDate)['Close']\n",
+    "    twelveDaySma = finance[-12:].sum()/len(finance[-12:])\n",
+    "    twentySixSMA = finance[-26:].sum()/len(finance[-26:])\n",
+    "    print (\"Twelve day moving avg = \", twelveDaySma)\n",
+    "    print ('Twenty-six day moving average =', twentySixSMA)\n",
+    "    twelveEmaMultiplier = 2/(finance[-12:].sum()+1)\n",
+    "    macDLine = twelveDaySma - twentySixSMA\n",
+    "    \n",
+    "    return macDLine\n",
+    "\n",
+    "\n",
+    "        \n",
+    "\n",
+    "    \n",
+    "macd('AAPL')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "anaconda-cloud": {},
+  "kernelspec": {
+   "display_name": "Python [default]",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.5.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 1
+}
